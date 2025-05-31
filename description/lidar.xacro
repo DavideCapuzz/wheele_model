@@ -29,7 +29,8 @@
     <gazebo reference="laser">
         <sensor name='LidarCircularSensor' type='gpu_lidar'>
             <pose relative_to="laser_joint">0 0 0.013 0 0 0</pose>
-            <topic>/scan</topic>
+            <topic>/scangz</topic>
+            
             <update_rate>10</update_rate>
             <ray>
                 <scan>
@@ -54,7 +55,7 @@
             </ray>
             <always_on>1</always_on>
             <visualize>true</visualize>
-            <!--<frame_id>lidar</frame_id>-->
+            <!-- <frame_id>lidar</frame_id> -->
         </sensor>
     </gazebo>
 

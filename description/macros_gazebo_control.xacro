@@ -20,7 +20,7 @@
             <max_velocity>100</max_velocity>
             <min_acceleration>-5</min_acceleration>
             <max_acceleration>5</max_acceleration>
-            <topic>/model/base_link/cmd_vel0</topic>
+            <topic>/cmd_vel0</topic>
         </plugin>
         <plugin
             filename="gz-sim-ackermann-steering-system"
@@ -40,7 +40,7 @@
             <max_velocity>100</max_velocity>
             <min_acceleration>-5</min_acceleration>
             <max_acceleration>5</max_acceleration>
-            <topic>/model/base_link/cmd_vel1</topic>
+            <topic>/cmd_vel1</topic>
         </plugin>
         <plugin
             filename="gz-sim-joint-state-publisher-system"
@@ -62,13 +62,13 @@
             <static_publisher>true</static_publisher>
             <static_update_frequency>1</static_update_frequency>
         </plugin>
-        <plugin
+        <!-- <plugin
             filename="gz-sim-odometry-publisher-system"
             name="gz::sim::systems::OdometryPublisher">
             <odom_frame>odom</odom_frame>
             <odom_topic>/odom</odom_topic>
             <robot_base_frame>base_link</robot_base_frame>
-        </plugin>
+        </plugin> -->
     </gazebo>
 
 </robot>

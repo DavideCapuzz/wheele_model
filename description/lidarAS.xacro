@@ -29,7 +29,7 @@
     <gazebo reference="lidarAS">
         <sensor name='lidarASCircularSensor' type='gpu_lidar'>
             <pose relative_to="laserAS_joint">0.016 0.02 0.03 0 0 0</pose>
-            <topic>/lidarAS</topic>
+            <topic>/lidarASgz</topic>
             <update_rate>10</update_rate>
             <ray>
                 <scan>

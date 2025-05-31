@@ -4,7 +4,7 @@
 %>
 <sdf version="1.8">
     <!--<arg name="x" default="0.0" />-->
-    <world name="odom">
+    <world name="demo">
         <physics name="1ms" type="ignored">
             <max_step_size>0.001</max_step_size>
             <real_time_factor>1.0</real_time_factor>
@@ -21,6 +21,41 @@
             filename="gz-sim-scene-broadcaster-system"
             name="gz::sim::systems::SceneBroadcaster">
         </plugin>
+        <!-- Processes the NavSat sensor -->
+        <plugin
+            filename="gz-sim-navsat-system"
+            name="gz::sim::systems::NavSat">
+        </plugin>
+
+        <plugin filename="gz-sim-imu-system"
+            name="gz::sim::systems::Imu">
+        </plugin>
+
+        <plugin filename="gz-sim-contact-system"
+            name="gz::sim::systems::Contact">
+        </plugin>
+
+        <!-- Set the coordinates for the world origin -->
+        <spherical_coordinates>
+            <surface_model>EARTH_WGS84</surface_model>
+            <world_frame_orientation>ENU</world_frame_orientation>
+            <latitude_deg>-22.986687</latitude_deg>
+            <longitude_deg>-43.202501</longitude_deg>
+            <elevation>0</elevation>
+            <heading_deg>0</heading_deg>
+        </spherical_coordinates>
+
+        <gui>
+            <!-- Map -->
+      <!--<plugin filename="NavSatMap" name="NavSat Map">
+        <gz-gui>
+          <title>NavSat Map</title>
+          <property key="state" type="string">docked</property>
+        </gz-gui>
+        <topic>/navsat</topic>
+        <topic_picker>true</topic_picker>
+      </plugin>--> 
+    </gui>
 
         <light type="directional" name="sun">
             <cast_shadows>true</cast_shadows>
