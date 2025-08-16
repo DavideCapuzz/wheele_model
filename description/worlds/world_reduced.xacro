@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="setup_room">
+
+  <!-- Include models -->
+  <xacro:include filename="$(find wheele_model)/description/worlds/room.xacro"/>
+  <xacro:include filename="$(find wheele_model)/description/worlds/cone.xacro"/>
+  <xacro:include filename="$(find wheele_model)/description/worlds/couch.xacro"/>
+
+  <!-- Args to toggle models -->
+  <xacro:arg name="use_room"  default="true"/>
+  <xacro:arg name="use_cone"  default="true"/>
+  <xacro:arg name="use_couch" default="false"/>
+
+  <!-- Mesh URIs -->
+  <xacro:property name="room_mesh"  value="package://wheele_model/meshes/enviroment/house1.dae"/>
+  <xacro:property name="cone_mesh"  value="package://wheele_model/meshes/enviroment/cone.dae"/>
+  <xacro:property name="couch_mesh" value="package://wheele_model/meshes/enviroment/3D_Dollhouse_Sofa/meshes/model.obj"/>
+
+  <xacro:macro name="setup_room_world" params="">
+    <sdf version="1.8">
+      <world name="setup_room">
+
+        <!-- Room -->
+        <xacro:if value="$(arg use_room)">
+          <xacro:room_model mesh_uri="${room_mesh}"/>
+        </xacro:if>
+
+        <!-- Cone -->
+        <xacro:if value="$(arg use_cone)">
+          <xacro:cone_model mesh_uri="${cone_mesh}"/>
+        </xacro:if>
+
+        <!-- Couch -->
+        <xacro:if value="$(arg use_couch)">
+          <xacro:couch_model mesh_uri="${couch_mesh}"/>
+        </xacro:if>
+
+      </world>
+    </sdf>
+  </xacro:macro>
+</robot>

@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="couch_model" params="mesh_uri">
+    <model name="couch">
+      <static>1</static>
+      <link name="link">
+        <pose>3.7 -2.5 0 0 0 1.570795</pose>
+        <visual name="visual">
+          <geometry>
+            <mesh><uri>${mesh_uri}</uri><scale>7 7 7</scale></mesh>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <mesh><uri>${mesh_uri}</uri><scale>5 5 5</scale></mesh>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+  </xacro:macro>
+</robot>

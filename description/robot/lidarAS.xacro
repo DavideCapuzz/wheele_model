@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+    <joint name="laserAS_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="lidarAS"/>
+        <origin xyz="${lidarAS_x} ${lidarAS_y} ${lidarAS_z}" rpy="0 0 0"/>
+    </joint>
+
+    <link name="lidarAS">
+        <visual>
+            <geometry>
+                <box size="${lidarAS_length} ${lidarAS_width} ${lidarAS_height}"/>
+            </geometry>
+            <material name="red"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${lidarAS_length} ${lidarAS_width} ${lidarAS_height}"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_box mass="0.5" x="${camera_length}" y="${lidarAS_width}" z="${lidarAS_height}">
+            <origin xyz="0 0 ${lidarAS_height/2}" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+
+
+    <gazebo reference="lidarAS">
+        <sensor name='lidarASCircularSensor' type='gpu_lidar'>
+            <pose relative_to="laserAS_joint">0.016 0.02 0.03 0 0 0</pose>
+            <topic>/lidarASgz</topic>
+            <update_rate>10</update_rate>
+            <ray>
+                <scan>
+                    <horizontal>
+                        <samples>16</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-0.7853975</min_angle>
+                        <max_angle>0.7853975</max_angle>
+                    </horizontal>
+                    <vertical>
+                        <samples>1</samples>
+                        <resolution>0.01</resolution>
+                        <min_angle>0</min_angle>
+                        <max_angle>0</max_angle>
+                    </vertical>
+                </scan>
+                <range>
+                    <min>0.08</min>
+                    <max>20.0</max>
+                    <resolution>0.01</resolution>
+                </range>
+            </ray>
+            <always_on>1</always_on>
+            <visualize>true</visualize>
+        </sensor>
+    </gazebo>
+
+</robot>

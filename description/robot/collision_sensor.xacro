@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+    <joint name="collision_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="collision_sensor"/>
+        <origin xyz="${collision_x} ${collision_y} ${collision_z}" rpy="${pi/2} 0 0"/>
+    </joint>
+
+    <link name="collision_sensor">
+        <visual>
+            <geometry>
+                <cylinder radius="${0.02/2}" length="0.5"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${0.02/2}" length="0.5"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_cylinder mass="0.1" length="0.5" radius="${0.02/2}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+
+
+
+    <gazebo reference="collision_sensor">
+        <sensor name='sensor_contact' type='contact'>
+          <contact>
+            <collision>collision_sensor</collision>
+            <topic>/contact</topic>
+          </contact>
+          <always_on>1</always_on>
+          <update_rate>100</update_rate>
+        </sensor>
+    </gazebo>
+
+</robot>
