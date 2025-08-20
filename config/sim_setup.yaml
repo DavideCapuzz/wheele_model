@@ -1,0 +1,13 @@
+environment_setup:
+  room:
+    pose: "0.4 0.3 0 0 -0 -1.570795"
+    model_file: "room.sdf"
+  couch:
+    pose: "3.7 -2.5 0 0 0 1.570795"
+    model_file: "couch.sdf"
+  cone:
+    pose: "6.2 -3.8 0 0 0 0"
+    model_file: "cone.sdf"
+world_setup:
+  latitude_origin: -22.986687
+  longitude_origin: -43.202501
