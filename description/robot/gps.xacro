@@ -24,8 +24,6 @@
         </xacro:inertial_cylinder>
     </link>
 
-
-
     <gazebo reference="gps">
         <sensor name="navsat" type="navsat">
             <pose relative_to="gps_joint">0 0 0.013 0 0 0</pose>

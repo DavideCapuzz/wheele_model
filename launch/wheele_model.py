@@ -80,9 +80,9 @@ def generate_launch_description():
     # Launch!
     return LaunchDescription([
         node_robot_state_publisher,
-        rviz_launch_arg,
+        # rviz_launch_arg,
         use_sim_time_launch_arg,
-        rviz
+        # rviz
         # static_laser_tf_node,
         # static_camera_tf_node
     ])

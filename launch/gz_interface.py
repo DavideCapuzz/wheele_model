@@ -7,7 +7,7 @@ from launch.substitutions import LaunchConfiguration, Command
 from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
 from launch.conditions import IfCondition
-
+from launch.actions import IncludeLaunchDescription, SetEnvironmentVariable
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.actions import ExecuteProcess
@@ -67,6 +67,9 @@ def modify_world_file(pkg_path, world_file, config_file):
     return world_file_updated
 
 def generate_launch_description():
+    set_render_engine = SetEnvironmentVariable('GZ_SIM_RENDER_ENGINE', 'ogre')
+    set_software_gl = SetEnvironmentVariable('LIBGL_ALWAYS_SOFTWARE', '1')
+    set_mesa_override = SetEnvironmentVariable('MESA_GL_VERSION_OVERRIDE', '3.3')
     use_sim_time = LaunchConfiguration('use_sim_time')
 
     use_sim_time_launch_arg = DeclareLaunchArgument(
@@ -86,7 +89,7 @@ def generate_launch_description():
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
-        launch_arguments={'gz_args': ['-r -v4 ' + world_file_updated], 'on_exit_shutdown': 'true'}.items(),
+        launch_arguments={'gz_args': world_file_updated + ' -r -v 4 --render-engine ogre', 'on_exit_shutdown': 'true'}.items(),
     )
     model_name = 'wheele'
     world_name = 'setup_room'
@@ -121,10 +124,10 @@ def generate_launch_description():
             # Clock (Gazebo -> ROS2)
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
             # Joint states (Gazebo -> ROS2)
-            joint_state_gz_topic + '@sensor_msgs/msg/JointState[gz.msgs.Model',
+            # joint_state_gz_topic + '@sensor_msgs/msg/JointState[gz.msgs.Model',
             # Link poses (Gazebo -> ROS2)
-            link_pose_gz_topic + '@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
-            link_pose_gz_topic + '_static@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
+            # link_pose_gz_topic + '@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
+            # link_pose_gz_topic + '_static@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
             # Velocity and odometry (Gazebo -> ROS2)           
             #'/imu@sensor_msgs/msg/Imu@gz.msgs.IMU',
             '/gz_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
@@ -135,11 +138,15 @@ def generate_launch_description():
             '/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
             '/navsat@sensor_msgs/msg/NavSatFix[gz.msgs.NavSat',
             '/cmd_vel0@geometry_msgs/msg/Twist@gz.msgs.Twist',
+            '/model/wheele/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry',
+            '/model/wheele/pose@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
             # gz_topic +  '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
             #'/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
             '/cmd_vel1@geometry_msgs/msg/Twist@gz.msgs.Twist'
         ],
         remappings=[
+            ('/model/wheele/odometry', '/ground_truth/odom'),
+            ('/model/wheele/pose', '/ground_truth/pose'),
             (joint_state_gz_topic, 'joint_states'),
             (link_pose_gz_topic, '/tf'),
             (link_pose_gz_topic + '_static', '/tf_static'),
@@ -154,13 +161,16 @@ def generate_launch_description():
         package='tf2_ros',
         executable='static_transform_publisher',
         name='static_map_tf',
-        arguments=['0', '0', '0', '0', '0', '0', 'map', 'odom']
+        # arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'wheele']
     )
 
 
     # Launch!
     return LaunchDescription([
-        # static_map_tf_node,
+        set_render_engine,      # First
+        set_software_gl,        # Second
+        set_mesa_override,
+        static_map_tf_node,
         gz_interface,
         bridge,
         gazebo,
